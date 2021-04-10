@@ -8,6 +8,11 @@ using Dapper;
 
 namespace DuckDB.NET.Samples
 {
+    class FooBar
+    {
+        public int foo { get; set; }
+        public int bar { get; set; }
+    }
     class Program
     {
         static void Main(string[] args)
@@ -59,7 +64,7 @@ namespace DuckDB.NET.Samples
             }
 
             //sending a dapper queury
-            duckDBConnection.Execute("CREATE TABLE integers2(foo INTEGER, bar INTEGER);");
+            var results = duckDBConnection.Query<FooBar>("SELECT foo, bar FROM integers");
         }
 
         private static void LowLevelBindingsSample()

@@ -99,7 +99,39 @@ namespace DuckDB.NET.Data
 
         public override Type GetFieldType(int ordinal)
         {
-            throw new NotImplementedException();
+            switch (queryResult.Columns[ordinal].Type)
+            {
+                case DuckDBType.DuckdbTypeInvalid:
+                    throw new DuckDBException("Invalid type");
+                case DuckDBType.DuckdbTypeBoolean:
+                    return typeof(bool);
+                case DuckDBType.DuckdbTypeTinyInt:
+                    return typeof(byte);
+                case DuckDBType.DuckdbTypeSmallInt:
+                    return typeof(short);
+                case DuckDBType.DuckdbTypeInteger:
+                    return typeof(int);
+                case DuckDBType.DuckdbTypeBigInt:
+                    return typeof(long);
+                case DuckDBType.DuckdbTypeFloat:
+                    return typeof(float);
+                case DuckDBType.DuckdbTypeDouble:
+                    return typeof(double);
+                case DuckDBType.DuckdbTypeTimestamp:
+                    return typeof(DateTime);
+                case DuckDBType.DuckdbTypeDate:
+                    return typeof(DateTime);
+                case DuckDBType.DuckdbTypeTime:
+                    return typeof(DateTime);
+                case DuckDBType.DuckdbTypeInterval:
+                    throw new NotImplementedException();
+                case DuckDBType.DuckdbTypeHugeInt:
+                    throw new NotImplementedException();
+                case DuckDBType.DuckdbTypeVarchar:
+                    return typeof(string);
+                default:
+                    throw new ArgumentException("Unrecognised type");
+            }
         }
 
         public override float GetFloat(int ordinal)
@@ -151,7 +183,39 @@ namespace DuckDB.NET.Data
 
         public override object GetValue(int ordinal)
         {
-            throw new NotImplementedException();
+            switch (queryResult.Columns[ordinal].Type)
+            {
+                case DuckDBType.DuckdbTypeInvalid:
+                    throw new DuckDBException("Invalid type");
+                case DuckDBType.DuckdbTypeBoolean:
+                    return GetBoolean(ordinal);
+                case DuckDBType.DuckdbTypeTinyInt:
+                    return GetByte(ordinal);
+                case DuckDBType.DuckdbTypeSmallInt:
+                    return GetInt16(ordinal);
+                case DuckDBType.DuckdbTypeInteger:
+                    return GetInt32(ordinal);
+                case DuckDBType.DuckdbTypeBigInt:
+                    return GetInt64(ordinal);
+                case DuckDBType.DuckdbTypeFloat:
+                    return GetFloat(ordinal);
+                case DuckDBType.DuckdbTypeDouble:
+                    return GetDouble(ordinal);
+                case DuckDBType.DuckdbTypeTimestamp:
+                    return GetDateTime(ordinal);
+                case DuckDBType.DuckdbTypeDate:
+                    return GetDateTime(ordinal);
+                case DuckDBType.DuckdbTypeTime:
+                    return GetDateTime(ordinal);
+                case DuckDBType.DuckdbTypeInterval:
+                    throw new NotImplementedException();
+                case DuckDBType.DuckdbTypeHugeInt:
+                    throw new NotImplementedException();
+                case DuckDBType.DuckdbTypeVarchar:
+                    return GetString(ordinal);
+                default:
+                    throw new ArgumentException("Unrecognised type");
+            }
         }
 
         public override int GetValues(object[] values)
@@ -178,7 +242,8 @@ namespace DuckDB.NET.Data
 
         public override bool NextResult()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return false; //since multiple result sets are not supported
         }
 
         public override bool Read()
